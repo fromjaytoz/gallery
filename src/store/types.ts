@@ -34,26 +34,26 @@ export interface SignInData {
 }
 
 interface SetUserAction {
-  type: string;
+  type: typeof SET_USER;
   payload: User;
 }
 
 interface SetLoadingAction {
-  type: string;
+  type: typeof SET_LOADING;
   payload: string;
 }
 
 interface SignOutAction {
-  type: string;
+  type: typeof SIGN_OUT;
 }
 
 interface SetErrorAction {
-  type: string;
+  type: typeof SET_ERROR;
   payload: string;
 }
 
 interface NeedVerificationAction {
-  type: string;
+  type: typeof NEED_VERIFICATION;
 }
 
 interface SetSuccessAction {
