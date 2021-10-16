@@ -84,3 +84,13 @@ export const getUserById = (
     }
   };
 };
+
+//Set Loading
+
+export const setLoading = (
+  value: boolean
+): ThunkAction<void, RootState, null, AuthAction> => {
+  return (dispatch: any) => {
+    dispatch({ type: SET_LOADING, payload: value });
+  };
+};
