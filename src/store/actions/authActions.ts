@@ -19,12 +19,12 @@ import {
   createUserWithEmailAndPassword,
   sendSignInLinkToEmail,
 } from "firebase/auth";
-import { Timestamp, doc, setDoc } from "@firebase/firestore";
+import { Timestamp, doc, setDoc, getDoc } from "@firebase/firestore";
 import { db, actionCodeSettings } from "../../firebase/config";
 import { resolveSoa } from "dns";
 
 //Create user
-export const signup = (
+export const signUp = (
   data: SignUpData,
   onError: () => void
 ): ThunkAction<void, RootState, null, AuthAction> => {
@@ -43,7 +43,7 @@ export const signup = (
           id: res.user.uid,
           createdAt: Timestamp.now(),
         };
-        await setDoc(doc(db, "/users", res.user.uid), {
+        await setDoc(doc(db, "users", res.user.uid), {
           userData,
         });
         await sendSignInLinkToEmail(auth, data.email, actionCodeSettings);
@@ -63,6 +63,24 @@ export const signup = (
         type: SET_ERROR,
         payload: err.message,
       });
+    }
+  };
+};
+
+//Get User By ID
+export const getUserById = (
+  id: string
+): ThunkAction<void, RootState, null, AuthAction> => {
+  return async (dispatch) => {
+    try {
+      const userRef = doc(db, "users");
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        const userData = userSnap.data() as User;
+        dispatch({ type: SET_USER, payload: userData });
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 };
