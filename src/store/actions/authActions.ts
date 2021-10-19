@@ -18,6 +18,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   sendSignInLinkToEmail,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 import { Timestamp, doc, setDoc, getDoc } from "@firebase/firestore";
 import { db, actionCodeSettings } from "../../firebase/config";
@@ -92,5 +93,21 @@ export const setLoading = (
 ): ThunkAction<void, RootState, null, AuthAction> => {
   return (dispatch: any) => {
     dispatch({ type: SET_LOADING, payload: value });
+  };
+};
+
+//Log In
+export const logIn = (
+  data: SignInData,
+  onError: () => void
+): ThunkAction<void, RootState, null, AuthAction> => {
+  return async (dispatch) => {
+    try {
+      const auth = getAuth();
+      await signInWithEmailAndPassword(auth, data.email, data.password);
+    } catch (err: any) {
+      onError();
+      dispatch(setError(err.message));
+    }
   };
 };
