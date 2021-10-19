@@ -19,6 +19,7 @@ import {
   createUserWithEmailAndPassword,
   sendSignInLinkToEmail,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import { Timestamp, doc, setDoc, getDoc } from "@firebase/firestore";
 import { db, actionCodeSettings } from "../../firebase/config";
@@ -108,6 +109,20 @@ export const logIn = (
     } catch (err: any) {
       onError();
       dispatch(setError(err.message));
+    }
+  };
+};
+
+export const logOut = (): ThunkAction<void, RootState, null, AuthAction> => {
+  return async (dispatch) => {
+    try {
+      dispatch(setLoading(true));
+      const auth = getAuth();
+      await signOut(auth);
+      dispatch({ type: SIGN_OUT });
+    } catch (err: any) {
+      console.log(err);
+      dispatch(setLoading(false));
     }
   };
 };
