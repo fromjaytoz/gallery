@@ -111,3 +111,11 @@ export const logIn = (
     }
   };
 };
+
+export const setError = (
+  msg: string
+): ThunkAction<void, RootState, null, AuthAction> => {
+  return (dispatch) => {
+    dispatch({ type: SET_ERROR, payload: msg });
+  };
+};
